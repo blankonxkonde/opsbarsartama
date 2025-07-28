@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Opsbarsartama Enhancements
 // @namespace    http://tampermonkey.net/
-// @version      1.5
+// @version      1.6
 // @description  Bypass Firefox check, adjust table width, and enable multi-login.
 // @author       (Your Name)
 // @match        *://opsbarsartama.com/*
@@ -10,18 +10,16 @@
 // @run-at       document-start
 // ==/UserScript==
 
+// --- User-Agent Spoofing (IMMEDIATE EXECUTION) ---
+// This is placed in the global scope to run immediately, winning the race condition against the site's browser check.
+const firefoxUserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0';
+Object.defineProperty(navigator, 'userAgent', {
+    get: function() { return firefoxUserAgent; }
+});
+
+
 (function() {
     'use strict';
-
-    // --- User-Agent Spoofing (Applied to both domains) ---
-    // This needs to run first to bypass browser checks on the site.
-    const firefoxUserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0';
-
-    Object.defineProperty(navigator, 'userAgent', {
-        get: function() {
-            return firefoxUserAgent;
-        }
-    });
 
     // --- Multi-Login Session Isolation ---
     // This part isolates localStorage per tab to allow multiple simultaneous sessions.
